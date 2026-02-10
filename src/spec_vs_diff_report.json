@@ -1,0 +1,79 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-10T00:27:50.812Z",
+  "summary": "Diff adds a new Motoko backend actor with device profile + build storage and a new React/TanStack Router + React Query frontend with Internet Identity login, device detection/registration, a Home one-click download flow, and a Builds listing page. However, the backend API shape and scoping do not clearly meet the requested build download-by-id and creator-scoped listing requirements based on the visible diff.",
+  "missing_requirements": [
+    {
+      "id": "REQ-4",
+      "requirement": "Provide backend methods to: upload/add a build, list builds (optionally filtered by creator/device target), and download a build by id; listing should return metadata sufficient for UI display and download selection; download must return the exact bytes that were uploaded.",
+      "reason": "The visible backend code shows `uploadBuild` and `listBuilds(deviceTarget : ?Text) : async [BuildEntry]`, but no explicit callable method to download a build by id returning bytes. The frontend downloads via `build.file.getBytes()` directly from the list result, implying list returns full blob handles rather than using a dedicated download-by-id API.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/pages/Home.tsx",
+        "frontend/src/pages/Builds.tsx"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Build list is creator-scoped (authenticated caller) and optionally filtered by creator/device target.",
+      "reason": "In the visible portion of `listBuilds`, it appears to add `builds.values()` without showing any filtering by `creator == caller`. The filtering logic is truncated, so creator scoping cannot be confirmed from the diff summary.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile storage and related APIs (get/save user profiles) added to backend.",
+      "reason": "BuildRequest focuses on creator identification, device registration, and build upload/list/download; it does not request general user profile CRUD.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Access-control initialization via a secret admin token pulled from a URL parameter (`caffeineAdminToken`) and `_initializeAccessControlWithSecret` call in the frontend actor creation flow.",
+      "reason": "BuildRequest did not mention admin-token bootstrapping, secret URL params, or caffeine-specific access control initialization behavior.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/utils/urlParams.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Caffeine.ai promotional footer content added to the UI.",
+      "reason": "Not requested by the BuildRequest requirements or acceptance criteria.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.62,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/CreatorStatus.tsx",
+    "frontend/src/components/LoginButton.tsx",
+    "frontend/src/hooks/queryKeys.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useBuilds.ts",
+    "frontend/src/hooks/useCurrentCreator.ts",
+    "frontend/src/hooks/useDeviceProfile.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useRegisterDeviceProfile.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/Builds.tsx",
+    "frontend/src/pages/Home.tsx",
+    "frontend/src/utils/buildSelection.ts",
+    "frontend/src/utils/device.ts",
+    "frontend/src/utils/download.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

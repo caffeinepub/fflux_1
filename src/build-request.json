@@ -1,0 +1,160 @@
+{
+  "kind": "build_request",
+  "title": "Initialize fflux app: creator device identification + one-click build download + backend build delivery",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create the initial fflux frontend app shell with a coherent visual theme (colors, typography, spacing, and component styling) applied consistently across all screens. Use English for all user-facing UI text.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-1"
+        ],
+        "quotes": [
+          "Sim faz tudo que quiseres fazer mas quero que começa a criar o aplicativo agora com as coisas que eu te falei",
+          "...um app que identifica o dispositivo do criador, possui o botão principal de download automático e se conecta ao backend para receber builds."
+        ]
+      },
+      "acceptanceCriteria": [
+        "App loads without errors and shows an initial home screen for fflux.",
+        "All visible UI strings are in English.",
+        "A single, consistent theme is applied (no default placeholder styling)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement creator identification via Internet Identity login and display the creator identity status in the UI (logged in/out). Use the authenticated Principal as the creator identifier for backend calls.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-2"
+        ],
+        "quotes": [
+          "...identifica o dispositivo do criador...",
+          "...quero que começa a criar o aplicativo agora com as coisas que eu te falei"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in and sign out using Internet Identity.",
+        "After login, the UI displays the current Principal (or a shortened representation) and uses it for subsequent backend interactions.",
+        "If not logged in, build actions prompt the user to log in (or disable the action with an explanatory message)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Detect the creator’s device details in the frontend (at minimum: OS/platform, browser, and a device label derived from user agent) and send this device profile to the backend to be registered/associated with the logged-in creator.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "...identifica o dispositivo do criador..."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Frontend collects device info (OS/platform + browser + user agent string or derived label).",
+        "On successful login (or first app load after login), frontend registers the device profile with the backend.",
+        "Backend stores the latest registered device profile per creator (and returns it when requested)."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement backend data model and API methods to store and serve builds to creators. Each build must include: an id, version string, createdAt timestamp, target device/os (or a generic target), filename, and the build binary content (or chunked content if needed). Provide backend methods to: upload/add a build, list builds (optionally filtered by creator/device target), and download a build by id.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "...se conecta ao backend para receber builds."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes callable methods for: adding a build, listing builds, and downloading a build by id.",
+        "Listing returns build metadata sufficient for UI display and for selecting the correct download.",
+        "Download returns the exact bytes that were uploaded for that build id.",
+        "Backend methods require an authenticated caller (Principal) for creator-scoped operations."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Create a main “one-click” download flow on the frontend: a prominent primary button that automatically selects the most appropriate build for the logged-in creator’s registered device (default to the latest compatible build) and downloads it to the user’s machine.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "...botão principal de download automático..."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Home screen contains a single prominent primary action button (English label) for automatic download.",
+        "Clicking the button triggers: device registration (if not yet done) -> fetch builds -> select latest compatible build -> download file.",
+        "If no compatible builds exist, the UI shows a clear empty state message in English.",
+        "Download uses a browser-safe mechanism (Blob + object URL) and preserves the build filename from metadata."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add a Builds screen that lists available builds from the backend (with version, date, target, filename) and allows manual download of a selected build.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "...receber/listar/baixar builds"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Builds list renders a loading state, empty state, and error state (all in English).",
+        "Each listed build shows version, timestamp, target, and filename.",
+        "Each build row/card includes a Download action that downloads that specific build id.",
+        "Build list is scoped to the logged-in creator (and/or filtered by device target when applicable)."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Use React Query on the frontend for backend data access (device registration, build listing, build download metadata) with proper caching and refetch behavior after device registration and after any build upload/add action (if exposed in UI later).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-1"
+        ],
+        "quotes": [
+          "...começa a criar o aplicativo agora...",
+          "...conecta-se a um backend para receber builds."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Build list queries are implemented via React Query.",
+        "Device registration result is stored and reused to avoid repeated registration on every render.",
+        "Queries refetch appropriately after login/logout transitions."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not edit any frontend files under frontend/src/components/ui or any immutable paths listed in SYSTEM_CONTEXT.",
+    "Use English for any user-facing text in the UI."
+  ],
+  "nonGoals": [
+    "Implementing third-party authentication providers (only Internet Identity).",
+    "Real-time build delivery (no websockets/push).",
+    "Integrations with external databases or cloud storage.",
+    "Mobile-native app packaging or app store publishing."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimalist fflux app logo mark, monochrome on transparent background (fflux-logo.dim_512x512.png)",
+      "Abstract dark geometric background texture with subtle grain (fflux-bg.dim_1920x1080.png)"
+    ],
+    "edits": []
+  }
+}

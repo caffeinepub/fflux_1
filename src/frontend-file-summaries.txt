@@ -1,0 +1,17 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, layout with header/footer, navigation between Home and Builds pages, and dark theme provider integration.",
+  "frontend/src/pages/Home.tsx": "Home page with one-click download functionality that auto-registers device, fetches builds, selects the best compatible build, and downloads it with loading/error/success states.",
+  "frontend/src/pages/Builds.tsx": "Builds listing page that displays all available builds with version, date, target device info, and individual download buttons for each build.",
+  "frontend/src/components/LoginButton.tsx": "Reusable login/logout button component using Internet Identity with loading states and query cache clearing on logout.",
+  "frontend/src/components/CreatorStatus.tsx": "Small badge component displaying the current user's authentication status and shortened Principal ID.",
+  "frontend/src/hooks/useCurrentCreator.ts": "Custom hook that derives authentication state and provides formatted Principal string from Internet Identity.",
+  "frontend/src/hooks/useRegisterDeviceProfile.ts": "React Query mutation hook that detects device info and registers it with the backend, invalidating related queries on success.",
+  "frontend/src/hooks/useDeviceProfile.ts": "React Query hook to fetch the current creator's registered device profile from the backend.",
+  "frontend/src/hooks/useBuilds.ts": "React Query hook to fetch and cache the list of builds from the backend, sorted by creation date.",
+  "frontend/src/hooks/queryKeys.ts": "Centralized React Query key definitions for consistent caching and invalidation across device profiles and builds.",
+  "frontend/src/utils/device.ts": "Device detection utilities that extract OS, browser, platform info from navigator/userAgent and generate a stable device ID stored in localStorage.",
+  "frontend/src/utils/download.ts": "Browser-safe file download helper that creates a Blob from bytes (with proper type conversion) and triggers download via temporary anchor element.",
+  "frontend/src/utils/buildSelection.ts": "Build selection logic that finds the best compatible build for a device by matching device label, OS, or falling back to latest build.",
+  "frontend/src/index.css": "Global styles with OKLCH-based dark theme color system featuring purple accent colors and proper contrast ratios.",
+  "frontend/tailwind.config.js": "Tailwind configuration with custom font families (Inter/JetBrains Mono), extended color tokens, border radius, and shadow utilities including a glow effect."
+}

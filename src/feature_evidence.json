@@ -1,0 +1,142 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-the-initial-fflux-frontend-app-shell-with-a-coherent-visual-theme-colors-typography-spacing-and-component-styling-applied-consistently-across-all-screens-use-english-for-all-user-facing-ui-text",
+      "featureTitle": "Create the initial fflux frontend app shell with a coherent visual theme (colors, typography, spacing, and component styling) applied consistently across all screens. Use English for all user-facing UI text.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/index.css",
+        "frontend/src/main.tsx",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-creator-identification-via-internet-identity-login-and-display-the-creator-identity-status-in-the-ui-logged-in-out-use-the-authenticated-principal-as-the-creator-identifier-for-backend-calls",
+      "featureTitle": "Implement creator identification via Internet Identity login and display the creator identity status in the UI (logged in/out). Use the authenticated Principal as the creator identifier for backend calls.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/CreatorStatus.tsx",
+        "frontend/src/components/LoginButton.tsx",
+        "frontend/src/hooks/useCurrentCreator.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-detect-the-creator-s-device-details-in-the-frontend-at-minimum-os-platform-browser-and-a-device-label-derived-from-user-agent-and-send-this-device-profile-to-the-backend-to-be-registered-associated-with-the-logged-in-creator",
+      "featureTitle": "Detect the creator’s device details in the frontend (at minimum: OS/platform, browser, and a device label derived from user agent) and send this device profile to the backend to be registered/associated with the logged-in creator.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useDeviceProfile.ts",
+        "frontend/src/hooks/useRegisterDeviceProfile.ts",
+        "frontend/src/pages/Home.tsx",
+        "frontend/src/utils/device.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-main-one-click-download-flow-on-the-frontend-a-prominent-primary-button-that-automatically-selects-the-most-appropriate-build-for-the-logged-in-creator-s-registered-device-default-to-the-latest-compatible-build-and-downloads-it-to-the-user-s-machine",
+      "featureTitle": "Create a main “one-click” download flow on the frontend: a prominent primary button that automatically selects the most appropriate build for the logged-in creator’s registered device (default to the latest compatible build) and downloads it to the user’s machine.",
+      "files": [
+        "frontend/src/hooks/useBuilds.ts",
+        "frontend/src/pages/Home.tsx",
+        "frontend/src/utils/buildSelection.ts",
+        "frontend/src/utils/download.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-builds-screen-that-lists-available-builds-from-the-backend-with-version-date-target-filename-and-allows-manual-download-of-a-selected-build",
+      "featureTitle": "Add a Builds screen that lists available builds from the backend (with version, date, target, filename) and allows manual download of a selected build.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/Builds.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-use-react-query-on-the-frontend-for-backend-data-access-device-registration-build-listing-build-download-metadata-with-proper-caching-and-refetch-behavior-after-device-registration-and-after-any-build-upload-add-action-if-exposed-in-ui-later",
+      "featureTitle": "Use React Query on the frontend for backend data access (device registration, build listing, build download metadata) with proper caching and refetch behavior after device registration and after any build upload/add action (if exposed in UI later).",
+      "files": [
+        "frontend/src/components/LoginButton.tsx",
+        "frontend/src/hooks/queryKeys.ts",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/hooks/useRegisterDeviceProfile.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

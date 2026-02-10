@@ -1,0 +1,200 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "fflux frontend shell with Internet Identity creator identification and build download flows",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Create the initial fflux frontend app shell with a consistent visual theme and English UI copy across all screens.",
+      "acceptanceCriteria": [
+        "App loads without errors and shows an initial home screen for fflux.",
+        "All visible UI strings are in English.",
+        "A single, consistent theme is applied (no default placeholder styling)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the fflux app shell layout (header + content area) and wire required screens (Home + Builds) into a simple navigation. Use shadcn-ui components for consistent styling (e.g., buttons/cards/badges). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add global theme styling (CSS variables / base typography / spacing defaults) and apply a coherent dark theme that matches the fflux branding. Ensure all user-facing text remains English."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme tokens (colors/radius/typography defaults) to match the fflux visual theme and ensure consistent styling across screens."
+        },
+        {
+          "path": "frontend/public/assets/generated/fflux-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated minimalist fflux logo mark asset at this exact path and wire it into the app shell UI (e.g., header branding)."
+        },
+        {
+          "path": "frontend/public/assets/generated/fflux-bg.dim_1920x1080.png",
+          "operation": "create",
+          "description": "Add the generated abstract dark geometric background asset at this exact path and apply it to the app shell background (via CSS and/or layout)."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Ensure the app entry renders the new App shell and keeps React Query + InternetIdentityProvider wrapping intact; confirm imports align with created files."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement creator identification via Internet Identity login and show logged-in/out status; use the authenticated Principal for backend calls.",
+      "acceptanceCriteria": [
+        "User can sign in and sign out using Internet Identity.",
+        "After login, the UI displays the current Principal (or a shortened representation) and uses it for subsequent backend interactions.",
+        "If not logged in, build actions prompt the user to log in (or disable the action with an explanatory message)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a reusable login/logout button using the authorization component’s frontend guidance (Internet Identity via useInternetIdentity), and clear React Query cache on logout. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/CreatorStatus.tsx",
+          "operation": "create",
+          "description": "Create a small UI element that displays logged-in/out state and shows a shortened Principal (and/or profile name when available) for the current creator. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentCreator.ts",
+          "operation": "create",
+          "description": "Add a hook that derives authentication state and the caller Principal string from useInternetIdentity (and optionally reads profile data via React Query) for consistent usage across screens. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire LoginButton and CreatorStatus into the app shell header and ensure build-related actions are gated/disabled when not authenticated with clear English messaging. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Detect device details in the frontend and register the device profile with the backend after login, associating it with the creator.",
+      "acceptanceCriteria": [
+        "Frontend collects device info (OS/platform + browser + user agent string or derived label).",
+        "On successful login (or first app load after login), frontend registers the device profile with the backend.",
+        "Backend stores the latest registered device profile per creator (and returns it when requested)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/device.ts",
+          "operation": "create",
+          "description": "Implement device detection utilities to derive OS/platform, browser, and a human-friendly device label from navigator/userAgent data; include a stable per-browser device id persisted to localStorage."
+        },
+        {
+          "path": "frontend/src/hooks/useRegisterDeviceProfile.ts",
+          "operation": "create",
+          "description": "Create a React Query mutation hook that registers the device profile with the backend once per authenticated Principal (cache the result and avoid re-registering on every render). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useDeviceProfile.ts",
+          "operation": "create",
+          "description": "Create a React Query hook to fetch and cache the current creator’s device profile for display and compatibility checks; refetch appropriately after registration. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Home.tsx",
+          "operation": "create",
+          "description": "Create the Home screen UI and trigger device registration on successful login/first render after login (via useRegisterDeviceProfile), showing a minimal status (e.g., “Device registered” / error) in English. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the Home page into the app shell and ensure device registration is initiated after authentication transitions without causing repeated registrations. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add a prominent one-click download button that selects the latest compatible build for the creator’s registered device and downloads it safely in the browser.",
+      "acceptanceCriteria": [
+        "Home screen contains a single prominent primary action button (English label) for automatic download.",
+        "Clicking the button triggers: device registration (if not yet done) -> fetch builds -> select latest compatible build -> download file.",
+        "If no compatible builds exist, the UI shows a clear empty state message in English.",
+        "Download uses a browser-safe mechanism (Blob + object URL) and preserves the build filename from metadata."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/download.ts",
+          "operation": "create",
+          "description": "Add a browser-safe download helper that creates a Blob + object URL and triggers a file download while preserving a provided filename."
+        },
+        {
+          "path": "frontend/src/hooks/useBuilds.ts",
+          "operation": "create",
+          "description": "Implement React Query hooks to fetch builds (optionally filtered by device target) and to fetch build details for download. Use the blob-storage ExternalBlob capability (getBytes) to obtain bytes for download. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/buildSelection.ts",
+          "operation": "create",
+          "description": "Implement build selection logic to choose the latest compatible build based on device target (fall back to latest build when appropriate) using build metadata returned from the backend."
+        },
+        {
+          "path": "frontend/src/pages/Home.tsx",
+          "operation": "modify",
+          "description": "Add the single prominent primary “one-click download” button and implement the flow: ensure logged in -> ensure device registered -> fetch builds -> select best -> download via ExternalBlob bytes to Blob/object URL; show English loading/empty/error states. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add a Builds screen that lists available builds for the logged-in creator and enables manual download per build.",
+      "acceptanceCriteria": [
+        "Builds list renders a loading state, empty state, and error state (all in English).",
+        "Each listed build shows version, timestamp, target, and filename.",
+        "Each build row/card includes a Download action that downloads that specific build id.",
+        "Build list is scoped to the logged-in creator (and/or filtered by device target when applicable)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Builds.tsx",
+          "operation": "create",
+          "description": "Create the Builds screen using React Query to load builds and render loading/empty/error states in English; display version/date/target/filename; provide per-build Download action using blob-storage ExternalBlob bytes + Blob/object URL download helper. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the Builds screen into the app navigation (no orphan screen) and ensure it is only accessible/functional when logged in, with clear English prompts otherwise. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Use React Query for backend access with caching and appropriate refetch behavior across auth/device registration transitions.",
+      "acceptanceCriteria": [
+        "Build list queries are implemented via React Query.",
+        "Device registration result is stored and reused to avoid repeated registration on every render.",
+        "Queries refetch appropriately after login/logout transitions."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/queryKeys.ts",
+          "operation": "create",
+          "description": "Define centralized React Query keys for creator-scoped resources (actor-dependent user state, device profile, builds list, build details) to ensure consistent caching and invalidation behavior."
+        },
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Ensure actor changes caused by login/logout drive invalidation/refetch of creator-scoped queries; align invalidation with newly introduced query keys (without changing backend capabilities)."
+        },
+        {
+          "path": "frontend/src/components/LoginButton.tsx",
+          "operation": "modify",
+          "description": "On logout, clear or reset React Query cached creator data (queryClient.clear) per the authorization component guidance; ensure UI remains stable and English-only. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useRegisterDeviceProfile.ts",
+          "operation": "modify",
+          "description": "Store device registration completion in React Query cache and persist a per-principal marker in localStorage/session to prevent repeated registration; invalidate/refetch device/build queries after a successful registration. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

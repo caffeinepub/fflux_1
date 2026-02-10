@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Projeto \"fflux\": aplicativo que identifica o dispositivo do criador, oferece um botão principal para download automático e conecta-se a um backend para receber builds.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Minimalist fflux app logo mark, monochrome on transparent background (fflux-logo.dim_512x512.png)\n- Abstract dark geometric background texture with subtle grain (fflux-bg.dim_1920x1080.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-the-initial-fflux-frontend-app-shell-with-a-coherent-visual-theme-colors-typography-spacing-and-component-styling-applied-consistently-across-all-screens-use-english-for-all-user-facing-ui-text",
+      "title": "Create the initial fflux frontend app shell with a coherent visual theme (colors, typography, spacing, and component styling) applied consistently across all screens. Use English for all user-facing UI text.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-creator-identification-via-internet-identity-login-and-display-the-creator-identity-status-in-the-ui-logged-in-out-use-the-authenticated-principal-as-the-creator-identifier-for-backend-calls",
+      "title": "Implement creator identification via Internet Identity login and display the creator identity status in the UI (logged in/out). Use the authenticated Principal as the creator identifier for backend calls.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-detect-the-creator-s-device-details-in-the-frontend-at-minimum-os-platform-browser-and-a-device-label-derived-from-user-agent-and-send-this-device-profile-to-the-backend-to-be-registered-associated-with-the-logged-in-creator",
+      "title": "Detect the creator’s device details in the frontend (at minimum: OS/platform, browser, and a device label derived from user agent) and send this device profile to the backend to be registered/associated with the logged-in creator.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-main-one-click-download-flow-on-the-frontend-a-prominent-primary-button-that-automatically-selects-the-most-appropriate-build-for-the-logged-in-creator-s-registered-device-default-to-the-latest-compatible-build-and-downloads-it-to-the-user-s-machine",
+      "title": "Create a main “one-click” download flow on the frontend: a prominent primary button that automatically selects the most appropriate build for the logged-in creator’s registered device (default to the latest compatible build) and downloads it to the user’s machine.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-builds-screen-that-lists-available-builds-from-the-backend-with-version-date-target-filename-and-allows-manual-download-of-a-selected-build",
+      "title": "Add a Builds screen that lists available builds from the backend (with version, date, target, filename) and allows manual download of a selected build.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-use-react-query-on-the-frontend-for-backend-data-access-device-registration-build-listing-build-download-metadata-with-proper-caching-and-refetch-behavior-after-device-registration-and-after-any-build-upload-add-action-if-exposed-in-ui-later",
+      "title": "Use React Query on the frontend for backend data access (device registration, build listing, build download metadata) with proper caching and refetch behavior after device registration and after any build upload/add action (if exposed in UI later).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Definir/estruturar o app fflux (base do projeto)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Identificar automaticamente o dispositivo do criador no app",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implementar botão principal de download automático de builds",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Conectar o app ao backend para receber/listar/baixar builds",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Implement backend data model and API methods to store and serve builds to creators. Each build must include: an id, version string, createdAt timestamp, target device/os (or a generic target), filename, and the build binary content (or chunked content if needed). Provide backend methods to: upload/add a build, list builds (optionally filtered by creator/device target), and download a build by id.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "fflux",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
